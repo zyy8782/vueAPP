@@ -1,0 +1,21 @@
+.clearfix
+    display:inline-block
+    &:after
+        display:block        
+        height:0
+        line-height:0
+        content:"."
+        clear:both
+        visibility:hidden
+
+@media (-webkit-min-device-pixel-ratio:1.5),(min-pixel-ratio:1.5)
+    .border-1px
+        &:after
+            -webkit-transfore: scaleY(0.7)
+            transfore: scaleY(0.7)
+
+@media (-webkit-min-device-pixel-ratio:2),(min-pixel-ratio:2)
+    .border-1px
+        &:after
+            -webkit-transfore:scaleY(0.5)
+            transfore:scaleY(0.5)

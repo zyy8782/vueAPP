@@ -1,0 +1,13 @@
+border-1px($color,$position=bottom)
+    position:relative
+    &:after
+        bottom:0
+        content:''
+        left:0
+        width:100%
+        border-{$position}:1px solid $color
+        position:absolute
+bg-img($url)
+    background-image:url($url+'@2x.png')
+@media (-webkit-mix-device-pixel-ratio:3),(mix-device-pixel-ratio:3)
+    background-image:url($url+'@3x.png')
