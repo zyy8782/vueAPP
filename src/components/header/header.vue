@@ -1,6 +1,6 @@
 <template>
    <div class="header">
-        <img class="bg-blur" :src="seller.avatar" style="width:100%;height:130px" />
+        <img class="bg-blur" :src="seller.avatar" style="width:100%;height:130px">
         <div class="header-wrap">
             <div class="header-avatar"><img :src="seller.avatar" ></div>
             <div class="content-wrap">
@@ -24,7 +24,9 @@
             <span class="notice-title">{{seller.bulletin}}</span>
             <i class="notice-jt iconfont icon-arrow-right"></i>
         </div>
-    <float-Layer :showLayer="showLayer" :seller="seller"></float-Layer>
+    <transition name="show">
+      <float-Layer :showLayer="showLayer" :seller="seller"></float-Layer>
+    </transition>
    </div>
 </template>
 
@@ -39,6 +41,7 @@ export default {
         }
     },
     methods:{
+      /* 显示浮层, 通过浮层内的按钮来关闭 */
         shows () {
             this.showLayer.type = true
         }
@@ -61,9 +64,14 @@ export default {
 <style lang="stylus" scoped>
 @import '../../common/stylus/index.styl'
 @import '../../common/font/iconfont1.css'
+  .show-enter-active,.show-leave-active{
+      transition: opacity 0.5s
+  }
+  .show-enter,.show-leave-active{
+      opacity: 0
+  }
     .bg-blue
         filter:blur(10px)
-
     .header
         width:100%;
         height:136px

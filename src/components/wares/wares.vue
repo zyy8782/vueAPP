@@ -22,7 +22,7 @@
             </div>
             <div class="addCars-wrap">
               <span v-show="!foods.count" class="addCars" @click="addfoods">加入购物车</span>
-              <buttoner :foods="foods" v-show="foods.count"></buttoner>
+              <buttoner :foods="foods" v-show="foods.count" @ballEvent="btnball"></buttoner>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
           <ul class="score-list">
             <li class="score-item" v-show="showHide(item.rateType,item.text)" v-for="item in foods.ratings">
               <div class="date-user">
-                <span class="date">{{item.rateTime}}</span>
+                <span class="date">{{item.rateTime|formatDate}}</span>
                 <span class="user">
                   {{item.username}}
                   <img :src="item.avatar" class="user-img">
@@ -73,7 +73,7 @@
         <i class="iconfont icon-arrow-right"></i>
       </router-link>
     </div>
-    <shoppingCarts :seller="seller" :buyMessage="buyMessage"></shoppingCarts>
+    <shoppingCarts :seller="seller" :buyMessage="buyMessage" ref="child"></shoppingCarts>
   </div>
 </template>
 
@@ -81,6 +81,7 @@
 import buttoner from '../buttoner/buttoner.vue'
 import shoppingCarts from '../shoppingCarts/shoppingCarts.vue'
 import Bscroll from 'better-scroll'
+import {formatDate} from '../../common/js/data.js'
 export default {
   name: "wares",
   components: {
@@ -94,9 +95,17 @@ export default {
       seller: {},
       waresMenu: null,
       selectClass: false,
-      selectType: 2
+      selectType: 2,
+      toggle: false
     }
   },
+  filters:{
+      formatDate (time) {
+          let date = new Date(time);
+          return formatDate(date,'yyyy-MM-dd hh:mm')
+      }
+  },
+  /* 跳转路由前获取路由参数,并判断与当前组件的数据是否一致,不一致就赋值 */
   beforeRouteEnter (to, from, next)  {
       next( vm => {
           let route = vm.$route.params.mainParams;
@@ -105,6 +114,7 @@ export default {
                 vm.foods = route;
                 vm.buyMessage = route1;
                 vm.$nextTick(() => {
+                  /* ↓↓↓ 不写会造成下一次点击页面会滚动到上一次退出的位置 */
                     vm.waresMenu.scrollTo(0,0);
                     vm.waresMenu.refresh();
                 })
@@ -123,6 +133,10 @@ export default {
     })
   },
   methods: {
+  /* 调用子组件方法 小球运动 */
+    btnball(el) {
+        this.$refs.child.ballev(el);
+    },
     initScroll() {
       let el = document.getElementsByClassName('wares-wrap')[0];
       this.waresMenu = new Bscroll(el, {
@@ -130,18 +144,21 @@ export default {
         click: true
       });
     },
+  /* 切换评价内容 */
     userScoreSelect(type) {
       this.selectType = type;
       this.$nextTick(() => {
         this.waresMenu.refresh();
       })
     },
+  /* 切换只显示有文字的 */
     select() {
       this.selectClass = !this.selectClass;
       this.$nextTick(() => {
         this.waresMenu.refresh();
       })
     },
+  /* 控制评价内容 li的显示 */
     showHide(type, text) {
       if (this.selectClass && !text) {
         return false
@@ -152,11 +169,33 @@ export default {
         return type === this.selectType
       };
     },
+  /* 添加到buyMessage中,实现数据统一 */
     addfoods() {
+      if(!event._constructed) {
+          return
+      }
+      if(!this.toggle) {
+          this.toggle = !this.toggle
+      }
+      /* 如果不存在就添加一个count属性 */
       if (!this.foods.count) {
         this.$set(this.foods, 'count', 1);
-        this.buyMessage.push(this.foods)
+        /* 再一次判断,buyMessage为空就添加该商品信息,
+         * 不为空就在进行判断,
+         * 避免出现在该页面商品购买数量为零,在增加,会导致buyMessage中添加多条相同信息 */
+        if(this.buyMessage.length !== 0) {
+            this.buyMessage.forEach((item) => {
+                if(item.name !== this.foods.name) {
+                    this.buyMessage.push(this.foods)
+                }else{
+                    return
+                }
+            })
+        }else{
+            this.buyMessage.push(this.foods)
+        }
       }
+
     }
   }
 };
@@ -168,16 +207,6 @@ export default {
 .wares{
 		width: 100%
 		background: #FFFFFF
-    &.link-enter-active,&.link-leave-active{
-          transition: all 0.5s
-          transform: translate3d(0,0,0)
-    }
-    &.link-enter{
-          transform: translate3d(100%,0,0)
-    }
-    &.link-leave-active{
-        transform: translate3d(-100%,0,0)
-    }
 }
 .wares-wrap{
     position: absolute

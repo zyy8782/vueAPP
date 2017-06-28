@@ -1,7 +1,7 @@
 <template>
     <div class="home">
-        <v-header></v-header>
-        <tab></tab>
+        <v-header v-once></v-header>
+        <tab v-once></tab>
         <transition name="show-right">
             <keep-alive>
                 <router-view :seller="seller" @emitParent="solts"></router-view>
@@ -15,6 +15,7 @@
 import header from '../header/header.vue';
 import tab from '../tab/tab.vue';
 import shoppingCarts from '../shoppingCarts/shoppingCarts.vue';
+
 export default {
     components: {
         'v-header': header,

@@ -10,7 +10,7 @@ import merchant from './components/content/merchant/merchant.vue';
 import wares from './components/wares/wares.vue';
 import home from './components/home/home.vue';
 
-import stylus from './common/stylus/index.styl';
+import stylus from '../src/common/stylus/index.styl'
 /* 注册路由 */
 Vue.use(VueRouter);
 Vue.use(VueResource);

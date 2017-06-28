@@ -1,46 +1,44 @@
 <template>
-
-     <div class="float-layer" v-show="showLayer.type">
-                <div class="float-layer-wrap clearfix">
-                    <div class="float-layer-main">
-                        <h1 class="flm-title">{{seller.name}}</h1>
-                        <star :score="seller.score" :size="24"></star>
-                        <div class="center-line">
-                            <div class="min-line"></div>
-                            <h2 class="min-title">优惠信息</h2>
-                            <div class="min-line"></div>
-                        </div>
-                        <ul class="discount">
-                            <li class="discount-item" v-for="(items,index) in seller.supports.length">
-                                <span class="discount-icon" :class="'icontype'+seller.supports[index].type"></span>
-                                <span class="description">{{seller.supports[index].description}}</span>
-                            </li>
-                        </ul>
-                        <div class="center-line">
-                            <div class="min-line"></div>
-                            <h2 class="min-title">商家公告</h2>
-                            <div class="min-line"></div>
-                        </div>
-                        <p class="layer-intro">{{seller.bulletin}}</p>
-                    </div>
-                </div>
-                <div class="float-layer-close iconfont icon-chacha" @click="hideLayer"></div>
-            </div>
-
+  <div class="float-layer" v-show="showLayer.type">
+    <div class="float-layer-wrap clearfix">
+      <div class="float-layer-main">
+        <h1 class="flm-title">{{seller.name}}</h1>
+        <star :score="seller.score" :size="24"></star>
+        <div class="center-line">
+          <div class="min-line"></div>
+          <h2 class="min-title">优惠信息</h2>
+          <div class="min-line"></div>
+        </div>
+        <ul class="discount">
+          <li class="discount-item" v-for="(items,index) in seller.supports.length">
+            <span class="discount-icon" :class="'icontype'+seller.supports[index].type"></span>
+            <span class="description">{{seller.supports[index].description}}</span>
+          </li>
+        </ul>
+        <div class="center-line">
+          <div class="min-line"></div>
+          <h2 class="min-title">商家公告</h2>
+          <div class="min-line"></div>
+        </div>
+        <p class="layer-intro">{{seller.bulletin}}</p>
+      </div>
+    </div>
+    <div class="float-layer-close iconfont icon-chacha" @click="hideLayer"></div>
+  </div>
 </template>
 
 <script>
 import star from '../star/star'
-    export default {
-        name:'floatLayer',
-        props:['showLayer','seller'],
-        components:{star},
-        methods:{
-            hideLayer () {
-                this.showLayer.type = false
-            }
-        }
+export default {
+  name: 'floatLayer',
+  props: ['showLayer', 'seller'],
+  components: { star },
+  methods: {
+    hideLayer() {
+      this.showLayer.type = false
     }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -57,7 +55,12 @@ import star from '../star/star'
         color:#FFFFFF
         overflow:auto
         background-color:rgba(7,17,27,0.8)
-
+        &.show-enter-active,&.show-leave-active{
+            transition: opacity 0.5s
+        }
+        &.show-enter,&.show-leave-active{
+            opacity: 0
+        }
     .float-layer-wrap
         min-height:100%
         width 100%

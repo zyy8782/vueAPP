@@ -93,7 +93,6 @@ export default {
                 return false
             }
         }
-
     },
     created () {
         this.$nextTick( () => {
@@ -118,11 +117,10 @@ export default {
             this.toggle = !this.toggle;
             let el = document.getElementsByClassName('collect')[0];
             if(this.toggle) {
-                el.innerHTML = '已收藏'
+                el.innerHTML = '已收藏';
             }else{
                 el.innerHTML = '收藏'
             }
-
         }
     }
 }

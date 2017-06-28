@@ -6,7 +6,7 @@
 	</div>
 	<div class="bottom bottom-hook">
 		<ul class="bottom-list">
-			<li class="bottom-item" v-for="item in buyMessage">
+			<li class="bottom-item" v-for="item in buyMessage" v-show="item.count>0">
 				<span class="title">{{item.name}}</span>
 				<div class="right">
 					<span class="price"><span class="icon">¥</span>{{item.price}}</span>

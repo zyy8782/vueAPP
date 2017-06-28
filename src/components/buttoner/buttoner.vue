@@ -4,7 +4,7 @@
             <div class="btn-down" @click="drop" v-show="foods.count > 0 ">-</div>
         </transition>
         <transition name="btn">
-            <div class="btn-num" v-show="foods.count > 0 " @click="texts">{{foods.count}}</div>
+            <div class="btn-num" v-show="foods.count > 0 ">{{foods.count}}</div>
         </transition>
         <div class="btn-up" @click="add">+</div>
     </div>
@@ -18,12 +18,12 @@ export default {
     methods: {
         add (event) {
             if (!event._constructed) {
-                return
+                return;
             };
             if (!this.foods.count) {
                 this.$set(this.foods,'count',0)
             }
-            this.foods.count++
+            this.foods.count++;
             this.$emit('ballEvent',event.target)
         },
         drop (event) {
@@ -35,9 +35,6 @@ export default {
                 return
             };
             this.foods.count--
-        },
-        texts() {
-          console.log(1)
         }
     }
 }

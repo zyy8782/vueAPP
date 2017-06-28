@@ -37,7 +37,7 @@ export default {
     .grade
         display:inline-block
         &.gn-center
-            width:100%            
+            width:100%
             text-align:center
         &.star-36
             &>.grade-num
